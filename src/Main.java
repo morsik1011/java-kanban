@@ -18,16 +18,16 @@ public class Main {
         taskManager.createTask(task1);
         taskManager.createTask(task2);
 
-        System.out.println("Печать списка задач:" + taskManager.getTaskList());
-        System.out.println("Печать списка задач по id:" + taskManager.getTaskById(1));
+        System.out.printf("Печать списка задач: %s%n", taskManager.getTaskList());
+        System.out.printf("Печать списка задач по id: %s%n", taskManager.getTaskById(1));
         task2.setStatus(Status.DONE);
         task2.setName("Новая задача2");
         taskManager.updateTask(task2);
-        System.out.println("Обновление статуса и данных задачи2:" + taskManager.getTaskById(task2.getId()));
+        System.out.printf("Обновление статуса и данных задачи2: %s%n", taskManager.getTaskById(task2.getId()));
         taskManager.removeTaskById(task2.getId());
-        System.out.println("Печать списка задач после удаления задачи2:" + taskManager.getTaskList());
+        System.out.printf("Печать списка задач после удаления задачи2: %s%n", taskManager.getTaskList());
         taskManager.removeAllTask();
-        System.out.println("Печать пустого списка задач:" + taskManager.getTaskList());
+        System.out.printf("Печать пустого списка задач: %s%n",taskManager.getTaskList());
 
         taskManager.createEpic(epic1);
         taskManager.createEpic(epic2);
@@ -40,31 +40,32 @@ public class Main {
         taskManager.createSubTask(subtask2);
         taskManager.createSubTask(subtask3);
 
-        System.out.println("Список эпиков:" + taskManager.getEpicList());
-        System.out.println("Список подзадач:" + taskManager.getSubtaskList());
+        System.out.printf("Список эпиков:%s", taskManager.getEpicList());
+        System.out.printf("Список подзадач: %s",taskManager.getSubtaskList());
 
-        System.out.println("Подзадача1:" + taskManager.getSubtaskById(subtask1.getId()));
+        System.out.printf("Подзадача1: %s", taskManager.getSubtaskById(subtask1.getId()));
 
 
-        System.out.println("Эпик1 " + taskManager.getEpickById(epic1.getId()));
+        System.out.printf("Эпик1: %s",taskManager.getEpickById(epic1.getId()));
 
         epic1.setName("Новый эпик1");
         subtask1.setStatus(Status.DONE);
 
         taskManager.updateSubtask(subtask1);
         taskManager.updateEpic(epic1);
-        System.out.println("Список эпиков после изменения эпика1:" + taskManager.getEpicList());
+        System.out.printf("Список эпиков после изменения эпика1: %s", taskManager.getEpicList());
 
 
         taskManager.removeSubtaskById(subtask1.getId());
-        System.out.println("Cписок подзадач после удаления подзадачи1 " + taskManager.getSubtaskList());
+        System.out.printf("Cписок подзадач после удаления подзадачи1: %s", taskManager.getSubtaskList());
 
         taskManager.removeEpicById(epic1.getId());
-        System.out.println("Список эпиков после удаления эпика1:" + taskManager.getEpicList()
-                + "список подзадач " + taskManager.getSubtaskList());
+        System.out.printf("Список эпиков после удаления эпика1: %s",taskManager.getEpicList());
+
+        System.out.printf("список подзадач: %s", taskManager.getSubtaskList());
 
         taskManager.removeAllEpic();
-        System.out.println("Список после удаления всех эпиков:" + taskManager.getEpicList());
+        System.out.printf("Список после удаления всех эпиков: %s",taskManager.getEpicList());
 
     }
 }
