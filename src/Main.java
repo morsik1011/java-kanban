@@ -40,32 +40,32 @@ public class Main {
         taskManager.createSubTask(subtask2);
         taskManager.createSubTask(subtask3);
 
-        System.out.printf("Список эпиков:%s", taskManager.getEpicList());
-        System.out.printf("Список подзадач: %s",taskManager.getSubtaskList());
+        System.out.printf("Список эпиков:%s%n", taskManager.getEpicList());
+        System.out.printf("Список подзадач: %s%n",taskManager.getSubtaskList());
 
-        System.out.printf("Подзадача1: %s", taskManager.getSubtaskById(subtask1.getId()));
+        System.out.printf("Подзадача1: %s%n", taskManager.getSubtaskById(subtask1.getId()));
 
 
-        System.out.printf("Эпик1: %s",taskManager.getEpickById(epic1.getId()));
+        System.out.printf("Эпик1: %s%n",taskManager.getEpickById(epic1.getId()));
 
         epic1.setName("Новый эпик1");
         subtask1.setStatus(Status.DONE);
 
         taskManager.updateSubtask(subtask1);
         taskManager.updateEpic(epic1);
-        System.out.printf("Список эпиков после изменения эпика1: %s", taskManager.getEpicList());
+        System.out.printf("Список эпиков после изменения эпика1: %s%n", taskManager.getEpicList());
 
 
         taskManager.removeSubtaskById(subtask1.getId());
-        System.out.printf("Cписок подзадач после удаления подзадачи1: %s", taskManager.getSubtaskList());
+        System.out.printf("Cписок подзадач после удаления подзадачи1: %s%n", taskManager.getSubtaskList());
 
         taskManager.removeEpicById(epic1.getId());
-        System.out.printf("Список эпиков после удаления эпика1: %s",taskManager.getEpicList());
+        System.out.printf("Список эпиков после удаления эпика1: %s%n",taskManager.getEpicList());
 
-        System.out.printf("список подзадач: %s", taskManager.getSubtaskList());
+        System.out.printf("список подзадач: %s%n", taskManager.getSubtaskList());
 
         taskManager.removeAllEpic();
-        System.out.printf("Список после удаления всех эпиков: %s",taskManager.getEpicList());
+        System.out.printf("Список после удаления всех эпиков: %s%n",taskManager.getEpicList());
 
     }
 }
