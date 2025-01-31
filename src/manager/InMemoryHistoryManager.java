@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final Map<Integer, Node> IdToNote;
+    private final Map<Integer, Node> idToNote;
     private Node first;
     private Node last;
 
     public InMemoryHistoryManager() {
-        this.IdToNote = new HashMap<>();
+        this.idToNote = new HashMap<>();
     }
 
     private static class Node {
@@ -31,7 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        removeNode(IdToNote.get(id));
+        removeNode(idToNote.get(id));
     }
 
     @Override
@@ -51,7 +51,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         final Node l = last;
         final Node newNode = new Node(l, task, null);
         last = newNode;
-        IdToNote.put(task.getId(), newNode);
+        idToNote.put(task.getId(), newNode);
         if (l == null)
             first = newNode;
         else
