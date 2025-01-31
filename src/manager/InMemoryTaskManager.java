@@ -15,13 +15,10 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> task = new HashMap<>();
     private final HashMap<Integer, Epic> epic = new HashMap<>();
     private final HashMap<Integer, Subtask> subtask = new HashMap<>();
-    private final HistoryManager historyManager= Managers.getDefaultHistory();
-
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
     private static int id = 0;
-
-
 
 
     private int nextId() {
@@ -227,4 +224,6 @@ public class InMemoryTaskManager implements TaskManager {
         return subtask.get(id);
     }
 }
+
+
 

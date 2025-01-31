@@ -13,7 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node first;
     private Node last;
 
-    public InMemoryHistoryManager(){
+    public InMemoryHistoryManager() {
         this.IdToNote = new HashMap<>();
     }
 
@@ -61,14 +61,14 @@ public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> getTask() {
         List<Task> tasks = new ArrayList<>();
         Node node = first;
-        while(node!= null){
+        while (node != null) {
             tasks.add(node.task);
-            node=node.next;
+            node = node.next;
         }
         return tasks;
     }
 
-    private void removeNode (Node node){
+    private void removeNode(Node node) {
 
         if (node != null) {
             if (node == first) {
