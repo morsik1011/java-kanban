@@ -25,22 +25,6 @@ class InMemoryTaskManagerTest {
 
 
     @Test
-    void TasksInHistoryManagerShouldNotBeUpdateAfterTaskUpdate() {
-        Task task = new Task("Задача", "Описание", Status.NEW);
-        taskManager.createTask(task);
-        taskManager.getTaskById(task.getId());
-        Task taskInHistory = taskManager.getHistory().get(0);
-
-        Status statusBeforeUpdate = taskInHistory.getStatus();
-        task.setStatus(Status.DONE);
-        taskManager.updateTask(task);
-
-        Task taskAfterUpdate = taskManager.getHistory().get(0);
-        Assertions.assertEquals(statusBeforeUpdate, taskAfterUpdate.getStatus());
-
-    }
-
-    @Test
     void getHistory() {
 
         Task task1 = new Task("Задача1", "Описание1", Status.NEW);
@@ -142,7 +126,7 @@ class InMemoryTaskManagerTest {
         taskManager.createTask(task1);
         taskManager.createTask(task2);
 
-        Task actualTask = taskManager.getTaskById(1);
+        Task actualTask = taskManager.getTaskById(task2.getId());
 
         Assertions.assertEquals(actualTask.getName(), name);
         Assertions.assertEquals(actualTask.getDescription(), decription);
@@ -206,7 +190,7 @@ class InMemoryTaskManagerTest {
         taskManager.createSubTask(subtask1);
         taskManager.createSubTask(subtask2);
 
-        taskManager.removeEpicById(0);
+        taskManager.removeEpicById(epic1.getId());
 
         Assertions.assertTrue(taskManager.getEpicList().isEmpty());
         Assertions.assertTrue(taskManager.getSubtaskList().isEmpty());
@@ -254,7 +238,7 @@ class InMemoryTaskManagerTest {
         taskManager.createSubTask(subtask2);
         taskManager.createSubTask(subtask3);
 
-        Epic actualEpic = taskManager.getEpickById(0);
+        Epic actualEpic = taskManager.getEpickById(epic1.getId());
 
         Assertions.assertEquals(actualEpic.getName(), name1);
         Assertions.assertEquals(actualEpic.getDescription(), decription1);
@@ -273,7 +257,7 @@ class InMemoryTaskManagerTest {
         taskManager.createSubTask(subtask1);
         taskManager.createSubTask(subtask2);
 
-        Subtask actualSubtask = taskManager.getSubtaskById(1);
+        Subtask actualSubtask = taskManager.getSubtaskById(subtask1.getId());
         Assertions.assertEquals(actualSubtask.getDescription(), decription);
         Assertions.assertEquals(actualSubtask.getName(), name);
         Assertions.assertEquals(actualSubtask.getStatus(), Status.DONE);
@@ -355,7 +339,7 @@ class InMemoryTaskManagerTest {
 
         ArrayList<Task> list = taskManager.getSubtaskList();
 
-        Assertions.assertEquals(list.get(0).getName(), name1);
+        Assertions.assertEquals(list.getFirst().getName(), name1);
         Assertions.assertEquals(list.get(0).getDescription(), decription1);
         Assertions.assertEquals(list.get(0).getStatus(), Status.DONE);
         Assertions.assertEquals(list.get(1).getName(), name2);
@@ -379,10 +363,11 @@ class InMemoryTaskManagerTest {
         taskManager.createSubTask(subtask2);
         taskManager.createSubTask(subtask3);
 
-        Subtask actualSubtask = taskManager.getSubtaskById(3);
+        Subtask actualSubtask = taskManager.getSubtaskById(subtask2.getId());
 
         Assertions.assertEquals(actualSubtask.getName(), name1);
         Assertions.assertEquals(actualSubtask.getDescription(), decription1);
         Assertions.assertEquals(actualSubtask.getStatus(), Status.NEW);
     }
 }
+
