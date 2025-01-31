@@ -45,14 +45,14 @@ class InMemoryTaskManagerTest {
     void getHistory() {
 
         Task task1 = new Task ("Задача1", "Описание1", Status.NEW);
-        Task task2 = new Task ("Задача2", "Описание2", Status.NEW);
+        Epic epic1 = new Epic ("Эпик1", "Описание1");
         taskManager.createTask(task1);
-        taskManager.createTask(task2);
+        taskManager.createEpic(epic1);
+
         taskManager.getTaskById(task1.getId());
-        taskManager.getTaskById(task2.getId());
+        taskManager.getEpickById(epic1.getId());
 
         List<Task> history = taskManager.getHistory();
-
         assertNotNull(history);
         assertEquals(2, history.size());
     }
