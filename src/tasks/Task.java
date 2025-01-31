@@ -10,7 +10,7 @@ public class Task {
     private String taskDescription;
     private Status taskStatus;
 
-    public Task( String taskName, String taskDescription, Status status) {
+    public Task(String taskName, String taskDescription, Status status) {
 
         this.taskName = taskName;
         this.taskDescription = taskDescription;
@@ -71,4 +71,6 @@ public class Task {
     public void setStatus(Status taskStatus) {
         this.taskStatus = taskStatus;
     }
+
 }
+
