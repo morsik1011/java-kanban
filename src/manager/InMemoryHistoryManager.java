@@ -48,14 +48,14 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task task) {
-        final Node l = last;
-        final Node newNode = new Node(l, task, null);
+        final Node lastNode = last;
+        final Node newNode = new Node(lastNode, task, null);
         last = newNode;
         idToNote.put(task.getId(), newNode);
-        if (l == null)
+        if (lastNode == null)
             first = newNode;
         else
-            l.next = newNode;
+            lastNode.next = newNode;
     }
 
     private List<Task> getTask() {
@@ -116,3 +116,4 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     }
 }
+
