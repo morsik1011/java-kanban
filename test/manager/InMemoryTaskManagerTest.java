@@ -319,7 +319,7 @@ class InMemoryTaskManagerTest {
 
         taskManager.removeSubtaskById(subtask3.getId());
 
-        ArrayList<Task> subtaskList = taskManager.getSubtaskList();
+        ArrayList<Subtask> subtaskList = taskManager.getSubtaskList();
         Assertions.assertEquals(subtaskList.size(), 2);
     }
 
@@ -337,7 +337,7 @@ class InMemoryTaskManagerTest {
         taskManager.createSubTask(subtask2);
 
 
-        ArrayList<Task> list = taskManager.getSubtaskList();
+        ArrayList<Subtask> list = taskManager.getSubtaskList();
 
         Assertions.assertEquals(list.getFirst().getName(), name1);
         Assertions.assertEquals(list.get(0).getDescription(), decription1);
