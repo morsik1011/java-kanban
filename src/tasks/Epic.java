@@ -21,6 +21,7 @@ public class Epic extends Task {
         return "Epic{" +
                 " epicid=" + getId() +
                 ", name=" + getName() +
+                ", subTaskIdList=" + subTaskIdList +
                 ", status=" + getStatus() +
                 '}';
     }
@@ -38,6 +39,7 @@ public class Epic extends Task {
     }
 
 }
+
 
 
 
