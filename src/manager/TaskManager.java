@@ -43,7 +43,7 @@ public interface TaskManager {
 
     Subtask removeSubtaskById(Integer id);
 
-    ArrayList<Task> getSubtaskList();
+    ArrayList<Subtask> getSubtaskList();
 
     Subtask getSubtaskById(Integer id);
 }
