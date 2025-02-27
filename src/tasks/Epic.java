@@ -12,6 +12,10 @@ public class Epic extends Task {
 
     }
 
+    public Epic(int id, String taskName, String taskDescription, Status status) {
+        super(id, taskName, taskDescription, status);
+    }
+
     @Override
     public String toString() {
         return "Epic{" +
@@ -35,6 +39,7 @@ public class Epic extends Task {
     }
 
 }
+
 
 
 
