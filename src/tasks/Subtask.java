@@ -1,16 +1,19 @@
 package tasks;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class Subtask extends Task {
 
     private int epicId;
 
-    public Subtask(Epic epic, String taskName, String taskDescription, Status taskStatus) {
-        super(taskName, taskDescription, taskStatus);
+    public Subtask(Epic epic, String taskName, String taskDescription, Status taskStatus, Duration duration, Instant startTime) {
+        super(taskName, taskDescription, taskStatus, duration, startTime);
         this.epicId = epic.getId();
     }
 
-    public Subtask(int id, int epicId, String taskName, String taskDescription, Status taskStatus) {
-        super(id, taskName, taskDescription, taskStatus);
+    public Subtask(int id, int epicId, String taskName, String taskDescription, Status taskStatus, Duration duration, Instant startTime) {
+        super(id, taskName, taskDescription, taskStatus, duration, startTime);
         this.epicId = epicId;
     }
 
@@ -21,6 +24,9 @@ public class Subtask extends Task {
                 ", name=" + getName() +
                 ", epicId=" + epicId +
                 ", status=" + getStatus() +
+                ", duration=" + getDuration().toMinutes() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 

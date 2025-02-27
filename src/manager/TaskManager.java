@@ -7,8 +7,11 @@ import tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
+    Set<Task> getPrioritizedTasks();
+
     List<Task> getHistory();
 
     Task createTask(Task newTask);

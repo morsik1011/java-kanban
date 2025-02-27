@@ -1,6 +1,8 @@
 package tasks;
 
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -8,12 +10,12 @@ public class Epic extends Task {
     private ArrayList<Integer> subTaskIdList = new ArrayList<>();
 
     public Epic(String taskName, String taskDescription) {
-        super(taskName, taskDescription, Status.NEW);
+        super(taskName, taskDescription, Status.NEW, Duration.ofMinutes(0), Instant.now());
 
     }
 
-    public Epic(int id, String taskName, String taskDescription, Status status) {
-        super(id, taskName, taskDescription, status);
+    public Epic(int id, String taskName, String taskDescription, Status status, Duration duration, Instant startTime) {
+        super(id, taskName, taskDescription, status, duration, startTime);
     }
 
     @Override
@@ -21,8 +23,10 @@ public class Epic extends Task {
         return "Epic{" +
                 " epicid=" + getId() +
                 ", name=" + getName() +
-                ", subTaskIdList=" + subTaskIdList +
                 ", status=" + getStatus() +
+                ", duration=" + getDuration().toMinutes() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 
