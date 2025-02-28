@@ -51,7 +51,7 @@ public class InMemoryTaskManager implements TaskManager {
         int newId = nextId();
         newTask.setId(newId);
         if (!hasInteraction(newTask)) {
-            throw new RuntimeException("Задачи пересекаются");
+            throw new RuntimeException("Новая задача с id- " + newTask.getId() + " пересекается с существующими задачами.");
         } else {
             task.put(newTask.getId(), newTask);
             prioritizedTasks.add(newTask);
@@ -62,7 +62,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task updateTask(Task newTask) {
         if (!hasInteraction(newTask)) {
-            throw new RuntimeException("Задачи пересекаются");
+            throw new RuntimeException("Pадача с id- " + newTask.getId() + " пересекается с существующими задачами.");
         } else {
             if (task.containsKey(newTask.getId())) {
                 Task existingTask = task.get(newTask.getId());
@@ -142,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
         removeSubTaskIdList(deleteEpic.getSubTaskIdList());
         historyManager.remove(id);
         deleteEpic.getSubTaskIdList().forEach(i -> {
-        historyManager.remove(i);
+            historyManager.remove(i);
         });
 
         return epic.remove(id);
@@ -167,7 +167,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask createSubTask(Subtask newSubtask) {
         if (!hasInteraction(newSubtask)) {
-            throw new RuntimeException("Задачи пересекаются");
+            throw new RuntimeException("Новая подзадача с id- " + newSubtask.getId() + " пересекается с существующими задачами.");
         } else {
             if (epic.containsKey(newSubtask.getEpicId())) {
                 int newId = nextId();
@@ -221,7 +221,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask updateSubtask(Subtask newSubtask) {
         if (!hasInteraction(newSubtask)) {
-            throw new RuntimeException("Задачи пересекаются");
+            throw new RuntimeException("Подзадача с id- " + newSubtask.getId() + " пересекается с существующими задачами.");
         } else {
             if (subtask.containsKey(newSubtask.getId())) {
                 Subtask existingSubtask = subtask.get(newSubtask.getId());
@@ -259,6 +259,7 @@ public class InMemoryTaskManager implements TaskManager {
         return subtask.get(id);
     }
 }
+
 
 
 
