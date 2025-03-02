@@ -1,6 +1,7 @@
 package tasks;
 
-
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 
 public class Task {
@@ -9,19 +10,28 @@ public class Task {
     private String taskName;
     private String taskDescription;
     private Status taskStatus;
+    private Duration duration;
+    private Instant startTime;
+    private Instant endTime;
 
-    public Task(String taskName, String taskDescription, Status status) {
+    public Task(String taskName, String taskDescription, Status status, Duration duration, Instant startTime) {
 
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStatus = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(duration);
     }
 
-    public Task(int id, String taskName, String taskDescription, Status status) {
+    public Task(int id, String taskName, String taskDescription, Status status, Duration duration, Instant startTime) {
         this.id = id;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
         this.taskStatus = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = startTime.plus(duration);
     }
 
     @Override
@@ -44,6 +54,9 @@ public class Task {
                 ", taskName='" + taskName + '\'' +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", status=" + taskStatus +
+                ", duration=" + duration.toMinutes() +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 
@@ -79,6 +92,29 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
 }
 
 

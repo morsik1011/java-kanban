@@ -11,8 +11,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -28,31 +33,30 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
             List<String> allLines = Files.readAllLines(file.toPath());
             allLines.removeFirst();
+            allLines.stream().map(line -> line.trim().split(","))
+                    .forEach(values -> {
+                        switch (values[1]) {
+                            case "TASK" -> {
+                                Task task = taskFromString(values);
+                                int taskId = Integer.parseInt(values[0]);
+                                task.setId(taskId);
+                                fileBackedTaskManager.task.put(taskId, task);
+                            }
+                            case "EPIC" -> {
+                                Epic epic = epicFromString(values);
+                                int epicId = Integer.parseInt(values[0]);
+                                epic.setId(epicId);
+                                fileBackedTaskManager.epic.put(epicId, epic);
+                            }
+                            case "SUBTASK" -> {
+                                Subtask subtask = subtaskFromString(values);
+                                int subtaskId = Integer.parseInt(values[0]);
+                                subtask.setId(subtaskId);
+                                fileBackedTaskManager.subtask.put(subtaskId, subtask);
+                            }
+                        }
 
-            for (String line : allLines) {
-                String[] values = line.trim().split(",");
-                switch (values[1]) {
-                    case "TASK" -> {
-                        Task task = taskFromString(values);
-                        int taskId = Integer.parseInt(values[0]);
-                        task.setId(taskId);
-                        fileBackedTaskManager.task.put(taskId, task);
-                    }
-                    case "EPIC" -> {
-                        Epic epic = epicFromString(values);
-                        int epicId = Integer.parseInt(values[0]);
-                        epic.setId(epicId);
-                        fileBackedTaskManager.epic.put(epicId, epic);
-                    }
-                    case "SUBTASK" -> {
-                        Subtask subtask = subtaskFromString(values);
-                        int subtaskId = Integer.parseInt(values[0]);
-                        subtask.setId(subtaskId);
-                        fileBackedTaskManager.subtask.put(subtaskId, subtask);
-                    }
-                }
-
-            }
+                    });
 
             return fileBackedTaskManager;
 
@@ -67,26 +71,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     //метод сохраняет текущее состояние менеджера в указанный файл
     private void save() {
-        List<String> lines = new ArrayList<>();
-        String title = "id,type,name,status,description,epic\n";
-        lines.add(title);
-        List<Task> allTasks = getTaskList();
-        for (Task task : allTasks) {
-            String taskAsString = taskToString(task);
-            lines.add(taskAsString);
-        }
+        List<String> lines = Stream.concat(
+                Stream.of("id,type,name,status,description,epic,duration,startTime,endTime\n"),
+                Stream.of(getTaskList().stream().map(this::taskToString),
+                        getEpicList().stream().map(this::epicToString),
+                        getSubtaskList().stream().map(this::subtaskToString)
+                ).flatMap(Function.identity())
+        ).collect(Collectors.toList());
 
-        List<Epic> allEpics = getEpicList();
-        for (Epic epic : allEpics) {
-            String epicAsString = epicToString(epic);
-            lines.add(epicAsString);
-        }
-
-        List<Subtask> allSubtask = getSubtaskList();
-        for (Subtask subtask : allSubtask) {
-            String subtaskAsString = subtaskToString(subtask);
-            lines.add(subtaskAsString);
-        }
         writeStringToFile(lines);
     }
 
@@ -107,32 +99,52 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     //метод сохранения задачи в строку
     private String taskToString(Task task) {
-        return String.format("%s,%s,%s,%s,%s\n", task.getId(), "TASK", task.getName(), task.getStatus(), task.getDescription());
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", task.getId(), "TASK", task.getName(),
+                task.getStatus(), task.getDescription(), task.getDuration().toMinutes(), task.getStartTime(), task.getEndTime());
     }
 
     private String epicToString(Epic epic) {
-        return String.format("%s,%s,%s,%s,%s\n", epic.getId(), "EPIC", epic.getName(), epic.getStatus(), epic.getDescription());
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", epic.getId(), "EPIC", epic.getName(),
+                epic.getStatus(), epic.getDescription(), epic.getDuration().toMinutes(), epic.getStartTime(), epic.getEndTime());
     }
 
     private String subtaskToString(Subtask subtask) {
-        return String.format("%s,%s,%s,%s,%s,%s\n", subtask.getId(), "SUBTASK", subtask.getName(), subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n", subtask.getId(), "SUBTASK", subtask.getName(),
+                subtask.getStatus(), subtask.getDescription(), subtask.getEpicId(), subtask.getDuration().toMinutes(),
+                subtask.getStartTime(), subtask.getEndTime());
     }
 
     //метод создания задачи из строки
     private static Task taskFromString(String[] values) {
         int taskId = Integer.parseInt(values[0]);
-        return new Task(taskId, values[2], values[4], statusToString(values[3]));
+        return new Task(taskId,
+                values[2],
+                values[4],
+                statusToString(values[3]),
+                Duration.ofMinutes(Long.parseLong(values[5])),
+                Instant.parse(values[6]));
     }
 
     private static Epic epicFromString(String[] values) {
         int epicId = Integer.parseInt(values[0]);
-        return new Epic(epicId, values[2], values[4], statusToString(values[3]));
+        return new Epic(epicId,
+                values[2],
+                values[4],
+                statusToString(values[3]),
+                Duration.ofMinutes(Long.parseLong(values[5])),
+                Instant.parse(values[6]));
     }
 
     private static Subtask subtaskFromString(String[] values) {
         int subtaskId = Integer.parseInt(values[0]);
-        int epicId = Integer.parseInt(values[values.length - 1]);
-        return new Subtask(subtaskId, epicId, values[2], values[4], statusToString(values[3]));
+        int epicId = Integer.parseInt(values[5]);
+        return new Subtask(subtaskId,
+                epicId,
+                values[2],
+                values[4],
+                statusToString(values[3]),
+                Duration.ofMinutes(Long.parseLong(values[6])),
+                Instant.parse(values[7]));
     }
 
     private static Status statusToString(String line) {
