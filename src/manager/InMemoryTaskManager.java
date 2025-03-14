@@ -54,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
         int newId = nextId();
         newTask.setId(newId);
         if (!hasInteraction(newTask)) {
-            throw new TaskInteractionException ("Новая задача с id- " + newTask.getId() + " пересекается с существующими задачами.");
+            throw new TaskInteractionException("Новая задача с id- " + newTask.getId() + " пересекается с существующими задачами.");
         } else {
             task.put(newTask.getId(), newTask);
             prioritizedTasks.add(newTask);
@@ -102,10 +102,10 @@ public class InMemoryTaskManager implements TaskManager {
     public Task getTaskById(Integer id) {
         Task tasks = task.get(id);
 
-      if (task == null) {
-           String errorMasage = String.format("Задача с id %d не найдена", id);
-           throw new TaskNotFoundException(errorMasage);
-       }
+        if (task == null) {
+            String errorMasage = String.format("Задача с id %d не найдена", id);
+            throw new TaskNotFoundException(errorMasage);
+        }
 
         historyManager.addToHistory(tasks);
         return task.get(id);
