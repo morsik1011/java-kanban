@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        
+
         File file = new File("data.csv");
         TaskManager taskManager = Managers.getFileBackTaskManager(file);
 
@@ -57,7 +57,6 @@ public class Main {
         }
         System.out.println("-------");
     }
-
 }
 
 
