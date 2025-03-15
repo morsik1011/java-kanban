@@ -12,6 +12,8 @@ import java.util.Set;
 public interface TaskManager {
     Set<Task> getPrioritizedTasks();
 
+    boolean hasInteraction(Task task);
+
     List<Task> getHistory();
 
     Task createTask(Task newTask);
@@ -24,7 +26,7 @@ public interface TaskManager {
 
     ArrayList<Task> getTaskList();
 
-    Task getTaskById(int id);
+    Task getTaskById(Integer id);
 
     Epic createEpic(Epic newEpic);
 

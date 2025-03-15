@@ -5,14 +5,14 @@ import java.time.Instant;
 
 public class Subtask extends Task {
 
-    private int epicId;
+    private Integer epicId;
 
     public Subtask(Epic epic, String taskName, String taskDescription, Status taskStatus, Duration duration, Instant startTime) {
         super(taskName, taskDescription, taskStatus, duration, startTime);
         this.epicId = epic.getId();
     }
 
-    public Subtask(int id, int epicId, String taskName, String taskDescription, Status taskStatus, Duration duration, Instant startTime) {
+    public Subtask(Integer id, Integer epicId, String taskName, String taskDescription, Status taskStatus, Duration duration, Instant startTime) {
         super(id, taskName, taskDescription, taskStatus, duration, startTime);
         this.epicId = epicId;
     }
@@ -30,7 +30,7 @@ public class Subtask extends Task {
                 '}';
     }
 
-    public void setEpicId(int epicId) {
+    public void setEpicId(Integer epicId) {
         this.epicId = epicId;
     }
 

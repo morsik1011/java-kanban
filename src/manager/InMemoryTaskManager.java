@@ -1,5 +1,7 @@
 package manager;
 
+import exception.TaskInteractionException;
+import exception.TaskNotFoundException;
 import tasks.Epic;
 import tasks.Status;
 import tasks.Subtask;
@@ -17,7 +19,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HistoryManager historyManager = Managers.getDefaultHistory();
     protected Set<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
-    private static int id = 0;
+    private static Integer id = 0;
 
 
     private int nextId() {
@@ -29,7 +31,8 @@ public class InMemoryTaskManager implements TaskManager {
         return new LinkedHashSet<>(prioritizedTasks);
     }
 
-    private boolean hasInteraction(Task task) {
+    @Override
+    public boolean hasInteraction(Task task) {
         return prioritizedTasks.stream()
                 .filter(otherTask -> (
                         (otherTask.getStartTime().isBefore(task.getStartTime()) && (otherTask.getEndTime().isAfter(task.getStartTime())))) ||
@@ -51,7 +54,7 @@ public class InMemoryTaskManager implements TaskManager {
         int newId = nextId();
         newTask.setId(newId);
         if (!hasInteraction(newTask)) {
-            throw new RuntimeException("Новая задача с id- " + newTask.getId() + " пересекается с существующими задачами.");
+            throw new TaskInteractionException(String.format("Новая задача с id-%d пересекается с существующими задачами.", newTask.getId()));
         } else {
             task.put(newTask.getId(), newTask);
             prioritizedTasks.add(newTask);
@@ -62,7 +65,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task updateTask(Task newTask) {
         if (!hasInteraction(newTask)) {
-            throw new RuntimeException("Pадача с id- " + newTask.getId() + " пересекается с существующими задачами.");
+            throw new TaskInteractionException(String.format("Задача с id-%d пересекается с существующими задачами.", newTask.getId()));
         } else {
             if (task.containsKey(newTask.getId())) {
                 Task existingTask = task.get(newTask.getId());
@@ -96,8 +99,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskById(int id) {
+    public Task getTaskById(Integer id) {
         Task tasks = task.get(id);
+
+        if (task == null) {
+            String errorMasage = String.format("Задача с id %d не найдена", id);
+            throw new TaskNotFoundException(errorMasage);
+        }
+
         historyManager.addToHistory(tasks);
         return task.get(id);
     }
@@ -141,9 +150,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic deleteEpic = epic.get(id);
         removeSubTaskIdList(deleteEpic.getSubTaskIdList());
         historyManager.remove(id);
-        deleteEpic.getSubTaskIdList().forEach(i -> {
-            historyManager.remove(i);
-        });
+        deleteEpic.getSubTaskIdList().forEach(i -> historyManager.remove(i));
 
         return epic.remove(id);
     }
@@ -167,7 +174,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask createSubTask(Subtask newSubtask) {
         if (!hasInteraction(newSubtask)) {
-            throw new RuntimeException("Новая подзадача с id- " + newSubtask.getId() + " пересекается с существующими задачами.");
+            throw new TaskInteractionException(String.format("Новая подзадача с id-%d пересекается с существующими задачами.", newSubtask.getId()));
         } else {
             if (epic.containsKey(newSubtask.getEpicId())) {
                 int newId = nextId();
@@ -221,7 +228,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask updateSubtask(Subtask newSubtask) {
         if (!hasInteraction(newSubtask)) {
-            throw new RuntimeException("Подзадача с id- " + newSubtask.getId() + " пересекается с существующими задачами.");
+            throw new TaskInteractionException(String.format("Подзадача с id-%d пересекается с существующими задачами.", newSubtask.getId()));
         } else {
             if (subtask.containsKey(newSubtask.getId())) {
                 Subtask existingSubtask = subtask.get(newSubtask.getId());
@@ -259,6 +266,7 @@ public class InMemoryTaskManager implements TaskManager {
         return subtask.get(id);
     }
 }
+
 
 
 

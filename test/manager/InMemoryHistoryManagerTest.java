@@ -101,7 +101,7 @@ class InMemoryHistoryManagerTest  {
 
     @Test
     void addToHistory() {
-        Task task1 = new Task("Задача1", "Описание1", Status.NEW, Duration.ofMinutes(1), Instant.now());
+        Task task1 = new Task(1,"Задача1", "Описание1", Status.NEW, Duration.ofMinutes(1), Instant.now());
 
         historyManager.addToHistory(task1);
 
@@ -112,13 +112,13 @@ class InMemoryHistoryManagerTest  {
 
     @Test
     void getHistory() {
-        Task task1 = new Task("Задача1", "Описание1", Status.NEW,Duration.ofMinutes(1), Instant.parse("2025-01-01T00:00:00Z"));
+        Task task1 = new Task(1,"Задача1", "Описание1", Status.NEW,Duration.ofMinutes(1), Instant.parse("2025-01-01T00:00:00Z"));
         historyManager.addToHistory(task1);
 
         List<Task> history = historyManager.getHistory();
 
         assertNotNull(history);
-        assertEquals("[Task{taskId=0, taskName='Задача1', taskDescription='Описание1', status=NEW, duration=1, startTime=2025-01-01T00:00:00Z, endTime=2025-01-01T00:01:00Z}]", history.toString());
+        assertEquals("[Task{taskId=1, taskName='Задача1', taskDescription='Описание1', status=NEW, duration=1, startTime=2025-01-01T00:00:00Z, endTime=2025-01-01T00:01:00Z}]", history.toString());
     }
 }
 

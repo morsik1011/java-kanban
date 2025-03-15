@@ -14,6 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         File file = new File("data.csv");
         TaskManager taskManager = Managers.getFileBackTaskManager(file);
 
@@ -34,7 +35,6 @@ public class Main {
         taskManager.createSubTask(subtask11);
         taskManager.createSubTask(subtask21);
         taskManager.createSubTask(subtask31);
-
 
         TaskManager taskManagerFromFile = FileBackedTaskManager.loadFromFile(file);
         printAllTasks(taskManagerFromFile);
@@ -57,7 +57,6 @@ public class Main {
         }
         System.out.println("-------");
     }
-
 }
 
 
